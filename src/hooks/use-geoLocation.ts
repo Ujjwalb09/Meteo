@@ -1,5 +1,4 @@
 import { Coordinates } from "@/api/types";
-import { error } from "console";
 import { useEffect, useState } from "react";
 
 interface GeoLocationState {
@@ -47,7 +46,26 @@ export function useGeoLocation() {
             errorMessage =
               "Location permission denied. Please enable location access.";
             break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = "Location information is unavailable.";
+            break;
+          case error.TIMEOUT:
+            errorMessage = "Location request timed out.";
+            break;
+          default:
+            errorMessage = "An unknown error has occured.";
         }
+
+        setLocationData({
+          coordinates: null,
+          error: errorMessage,
+          isLoading: false,
+        });
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
       }
     );
   };
