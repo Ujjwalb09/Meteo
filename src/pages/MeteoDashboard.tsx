@@ -2,6 +2,11 @@ import AlertMessage from "@/components/Alert";
 import WeatherSkeleton from "@/components/loading-skeleton";
 import { Button } from "@/components/ui/button";
 import { useGeoLocation } from "@/hooks/use-geoLocation";
+import {
+  useForecastQuery,
+  useReverseGeocodeQuery,
+  useWeatherQuery,
+} from "@/hooks/use-weather";
 import { RefreshCcw } from "lucide-react";
 
 const MeteoDashboard = () => {
@@ -13,11 +18,20 @@ const MeteoDashboard = () => {
   } = useGeoLocation();
   console.log("coordinates", coordinates);
 
+  const locationQuery = useReverseGeocodeQuery(coordinates);
+  const weatherQuery = useWeatherQuery(coordinates);
+  const forecastQuery = useForecastQuery(coordinates);
+  console.log("weatherQuery", weatherQuery.data);
+  console.log("forecaseQuery", forecastQuery.data);
+
   const handleRefresh = () => {
     getLocation();
 
     if (coordinates) {
       //reload weather data
+      weatherQuery.refetch();
+      forecastQuery.refetch();
+      locationQuery.refetch();
     }
   };
 
