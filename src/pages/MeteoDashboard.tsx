@@ -35,9 +35,9 @@ const MeteoDashboard = () => {
     }
   };
 
-  if (locationLoading) {
-    return <WeatherSkeleton />;
-  }
+  // if (locationLoading) {
+  //   return <WeatherSkeleton />;
+  // }
 
   if (locationError) {
     return (
